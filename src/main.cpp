@@ -1,7 +1,6 @@
-#include <cstdio>
+#include "mnist_parser.h"
 
 int main() {
-  printf("Hello, World!");
-
+  mnist::parse_image("../data/t10k-images-idx3-ubyte");
   return 0;
 }

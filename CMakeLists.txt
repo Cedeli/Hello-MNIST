@@ -13,6 +13,7 @@ add_executable(${EXECUTABLE_NAME})
 target_sources(${EXECUTABLE_NAME}
     PRIVATE
     src/main.cpp
+    src/mnist_parser.cpp
 )
 
 add_subdirectory(eigen)
