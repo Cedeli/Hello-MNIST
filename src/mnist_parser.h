@@ -1,14 +1,20 @@
 #ifndef MNIST_PARSER_H
 #define MNIST_PARSER_H
 
-#include <arpa/inet.h>
-#include <fstream>
-#include <iostream>
+#include "file_reader.h"
+#include "mnist_data.h"
 #include <string>
-#include <vector>
 
 namespace mnist {
-void parse_image(std::string path);
-void parse_label(std::string path);
+class MnistParser {
+private:
+  mnist::FileReader reader_;
+
+public:
+  MnistParser();
+  ~MnistParser();
+  bool parse_images(std::string &path, MnistImages &images);
+};
 } // namespace mnist
+
 #endif // MNIST_PARSER
