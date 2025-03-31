@@ -25,6 +25,36 @@ bool MnistParser::parse_images(std::string &path, MnistImages &images) {
   std::cout << "Image Rows: " << rows << '\n';
   std::cout << "Image Columns: " << cols << '\n';
 
+  images.num_images = amount;
+  images.rows = rows;
+  images.columns = cols;
+
+  images.images.resize(amount);
+
+  for (uint32_t i = 0; i < amount; ++i) {
+    images.images[i].resize(rows);
+    for (uint32_t r = 0; r < rows; ++r) {
+      images.images[i][r].resize(cols);
+
+      char buffer[cols];
+      if (!reader_.file.read(buffer, cols)) {
+        std::cerr << "Error reading pixel data for image: " << i << ", row" << r
+                  << '\n';
+        reader_.close();
+        return false;
+      }
+
+      for (uint32_t c = 0; c < cols; ++c) {
+        images.images[i][r][c] = static_cast<unsigned char>(buffer[c]);
+      }
+    }
+
+    if (i % 1000 == 0) {
+      std::cout << "Processed " << i << " images..." << '\n';
+    }
+  }
+
+  std::cout << "Successfully parsed " << amount << " images" << '\n';
   reader_.close();
   return true;
 }

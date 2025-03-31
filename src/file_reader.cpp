@@ -2,23 +2,23 @@
 
 namespace mnist {
 bool FileReader::open(std::string &path) {
-  if (file_.is_open()) {
-    file_.close();
+  if (file.is_open()) {
+    file.close();
   }
 
-  file_.open(path, std::ios::binary);
-  return file_.is_open();
+  file.open(path, std::ios::binary);
+  return file.is_open();
 }
 
 void FileReader::close() {
-  if (file_.is_open()) {
-    file_.close();
+  if (file.is_open()) {
+    file.close();
   }
 }
 
 bool FileReader::read_uint32(uint32_t &value) {
   char buffer[4];
-  if (!file_.read(buffer, 4)) {
+  if (!file.read(buffer, 4)) {
     return false;
   }
 

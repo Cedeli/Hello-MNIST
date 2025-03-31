@@ -11,10 +11,10 @@
 namespace mnist {
 class FileReader {
 private:
-  std::ifstream file_;
   uint32_t big_endian(char *buffer);
 
 public:
+  std::ifstream file;
   bool open(std::string &path);
   void close();
   bool read_uint32(uint32_t &value);
