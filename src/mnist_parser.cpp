@@ -7,6 +7,7 @@ MnistParser::~MnistParser() { reader_.close(); }
 
 bool MnistParser::parse_images(std::string &path, MnistImages &images) {
   if (!reader_.open(path)) {
+    std::cerr << "Failed to open file: " << path << '\n';
     return false;
   }
 
@@ -14,6 +15,8 @@ bool MnistParser::parse_images(std::string &path, MnistImages &images) {
   if (!reader_.read_uint32(magic) || magic != 2051 ||
       !reader_.read_uint32(amount) || !reader_.read_uint32(rows) ||
       !reader_.read_uint32(cols)) {
+    std::cerr << "Failed to read file or invalid magic number" << '\n';
+    reader_.close();
     return false;
   }
 
