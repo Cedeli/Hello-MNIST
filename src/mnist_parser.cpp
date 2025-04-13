@@ -1,5 +1,6 @@
 #include "mnist_parser.h"
 #include "file_reader.h"
+#include "mnist_data.h"
 
 namespace mnist {
 MnistParser::MnistParser() : reader_() {}
@@ -58,4 +59,44 @@ bool MnistParser::parse_images(std::string &path, MnistImages &images) {
   reader_.close();
   return true;
 }
+
+bool MnistParser::parse_labels(std::string &path, MnistLabels &labels) {
+  if (!reader_.open(path)) {
+    std::cerr << "Failed to open file: " << path << std::endl;
+    return false;
+  }
+
+  uint32_t magic, amount;
+
+  if (!reader_.read_uint32(magic) || magic != 2049 ||
+      !reader_.read_uint32(amount)) {
+    std::cerr << "Failed to read label file header or invalid magic number"
+              << std::endl;
+    reader_.close();
+    return false;
+  }
+
+  std::cout << "Magic Number: " << magic << '\n';
+  std::cout << "Label Amount: " << amount << '\n';
+
+  labels.num_labels = amount;
+
+  labels.labels.resize(amount);
+
+  std::vector<char> buffer(amount);
+  if (!reader_.file.read(buffer.data(), amount)) {
+    std::cerr << "Error reading label data" << std::endl;
+    reader_.close();
+    return false;
+  }
+
+  for (uint32_t i = 0; i < amount; ++i) {
+    labels.labels[i] = static_cast<unsigned char>(buffer[i]);
+  }
+
+  std::cout << "Successfully parsed " << amount << " labels" << std::endl;
+  reader_.close();
+  return true;
+}
+
 } // namespace mnist

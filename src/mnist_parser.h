@@ -14,6 +14,7 @@ public:
   MnistParser();
   ~MnistParser();
   bool parse_images(std::string &path, MnistImages &images);
+  bool parse_labels(std::string &path, MnistLabels &labels);
 };
 } // namespace mnist
 
