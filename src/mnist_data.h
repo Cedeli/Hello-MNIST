@@ -8,12 +8,12 @@ struct MnistImages {
   uint32_t num_images;
   uint32_t rows;
   uint32_t columns;
-  std::vector<std::vector<std::vector<unsigned char>>> images;
+  std::vector<std::vector<std::vector<unsigned char>>> value;
 };
 
 struct MnistLabels {
   uint32_t num_labels;
-  std::vector<unsigned char> labels;
+  std::vector<unsigned char> value;
 };
 
 #endif // !MNIST_DATA_H

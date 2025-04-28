@@ -30,12 +30,12 @@ bool MnistParser::parse_images(std::string &path, MnistImages &images) {
   images.rows = rows;
   images.columns = cols;
 
-  images.images.resize(amount);
+  images.value.resize(amount);
 
   for (uint32_t i = 0; i < amount; ++i) {
-    images.images[i].resize(rows);
+    images.value[i].resize(rows);
     for (uint32_t r = 0; r < rows; ++r) {
-      images.images[i][r].resize(cols);
+      images.value[i][r].resize(cols);
 
       char buffer[cols];
       if (!reader_.file.read(buffer, cols)) {
@@ -46,7 +46,7 @@ bool MnistParser::parse_images(std::string &path, MnistImages &images) {
       }
 
       for (uint32_t c = 0; c < cols; ++c) {
-        images.images[i][r][c] = static_cast<unsigned char>(buffer[c]);
+        images.value[i][r][c] = static_cast<unsigned char>(buffer[c]);
       }
     }
 
