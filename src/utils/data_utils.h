@@ -1,3 +1,6 @@
+#ifndef MNIST_DATA_UTILS_H
+#define MNIST_DATA_UTILS_H
+
 #include "../data/mnist_data.h"
 #include <eigen3/Eigen/Core>
 
@@ -12,3 +15,5 @@ private:
   ~DataUtils() = delete;
 };
 }; // namespace mnist
+
+#endif // !MNIST_DATA_UTILS_H
