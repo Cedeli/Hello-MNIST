@@ -1,4 +1,5 @@
 #include "neural_network.h"
+#include <eigen3/Eigen/src/Core/Array.h>
 
 mnist::NeuralNetwork::NeuralNetwork() { initialize(); }
 
@@ -25,7 +26,6 @@ void mnist::NeuralNetwork::initialize() {
 
   W3.resize(hidden2_size, output_size);
   W3.setRandom();
-  W3 *= scale;
 
   b3.resize(output_size);
   b3.setRandom();
@@ -36,9 +36,14 @@ Eigen::MatrixXf mnist::NeuralNetwork::forward(const Eigen::MatrixXf &input) {
 }
 
 Eigen::MatrixXf mnist::NeuralNetwork::relu(const Eigen::MatrixXf &input) {
-  return input;
+  Eigen::MatrixXf result = input.array().cwiseMax(0);
+  return result;
 }
 
 Eigen::MatrixXf mnist::NeuralNetwork::softmax(const Eigen::MatrixXf &input) {
-  return input;
+  Eigen::VectorXf max_values = input.rowwise().maxCoeff();
+  Eigen::ArrayXXf shifted = input.array().colwise() - max_values.array();
+  Eigen::ArrayXf exps = shifted.exp();
+  Eigen::ArrayXf sums = exps.rowwise().sum();
+  return (exps.colwise() / sums).matrix();
 }
