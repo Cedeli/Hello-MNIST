@@ -1,5 +1,4 @@
 #include "neural_network.h"
-#include <eigen3/Eigen/src/Core/Array.h>
 
 mnist::NeuralNetwork::NeuralNetwork() { initialize(); }
 
@@ -26,13 +25,22 @@ void mnist::NeuralNetwork::initialize() {
 
   W3.resize(hidden2_size, output_size);
   W3.setRandom();
+  W3 *= scale;
 
   b3.resize(output_size);
-  b3.setRandom();
+  b3.setZero();
 }
 
 Eigen::MatrixXf mnist::NeuralNetwork::forward(const Eigen::MatrixXf &input) {
-  return input;
+  Eigen::MatrixXf Z1 = (input * W1).rowwise() + b1.transpose();
+  Eigen::MatrixXf A1 = relu(Z1);
+
+  Eigen::MatrixXf Z2 = (A1 * W2).rowwise() + b2.transpose();
+  Eigen::MatrixXf A2 = relu(Z2);
+
+  Eigen::MatrixXf Z3 = (A2 * W3).rowwise() + b3.transpose();
+  Eigen::MatrixXf A3 = softmax(Z3);
+  return A3;
 }
 
 Eigen::MatrixXf mnist::NeuralNetwork::relu(const Eigen::MatrixXf &input) {
