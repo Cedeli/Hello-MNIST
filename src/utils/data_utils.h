@@ -1,4 +1,4 @@
-#include "../mnist_data.h"
+#include "../data/mnist_data.h"
 #include <eigen3/Eigen/Core>
 
 namespace mnist {
