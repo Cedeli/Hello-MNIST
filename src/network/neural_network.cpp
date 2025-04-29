@@ -55,3 +55,13 @@ Eigen::MatrixXf mnist::NeuralNetwork::softmax(const Eigen::MatrixXf &input) {
   Eigen::ArrayXf sums = exps.rowwise().sum();
   return (exps.colwise() / sums).matrix();
 }
+
+float mnist::NeuralNetwork::calculate_loss(const Eigen::MatrixXf &predictions,
+                                           const Eigen::MatrixXf &labels) {
+  float epsilon = 1e-9f;
+  Eigen::MatrixXf log_predictions = (predictions.array() + epsilon).log();
+  Eigen::MatrixXf masked_log_predictions =
+      log_predictions.array() * labels.array();
+  float log_sum = -masked_log_predictions.sum();
+  return log_sum / labels.rows();
+}

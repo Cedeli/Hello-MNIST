@@ -15,6 +15,8 @@ public:
   ~NeuralNetwork() = default;
 
   Eigen::MatrixXf forward(const Eigen::MatrixXf &input);
+  float calculate_loss(const Eigen::MatrixXf &prediction,
+                       const Eigen::MatrixXf &labels);
 
 private:
   Eigen::MatrixXf W1;
