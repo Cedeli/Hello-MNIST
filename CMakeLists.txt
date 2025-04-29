@@ -15,6 +15,7 @@ target_sources(${EXECUTABLE_NAME}
     src/main.cpp
     src/mnist_parser.cpp
     src/file_reader.cpp
+    src/util/data_utils.cpp
 )
 
 add_subdirectory(eigen)

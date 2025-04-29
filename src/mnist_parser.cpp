@@ -32,9 +32,9 @@ bool MnistParser::parse_images(std::string &path, MnistImages &images) {
 
   images.value.resize(amount);
 
-  for (uint32_t i = 0; i < amount; ++i) {
+  for (size_t i = 0; i < amount; ++i) {
     images.value[i].resize(rows);
-    for (uint32_t r = 0; r < rows; ++r) {
+    for (size_t r = 0; r < rows; ++r) {
       images.value[i][r].resize(cols);
 
       char buffer[cols];
@@ -45,7 +45,7 @@ bool MnistParser::parse_images(std::string &path, MnistImages &images) {
         return false;
       }
 
-      for (uint32_t c = 0; c < cols; ++c) {
+      for (size_t c = 0; c < cols; ++c) {
         images.value[i][r][c] = static_cast<unsigned char>(buffer[c]);
       }
     }
@@ -81,7 +81,7 @@ bool MnistParser::parse_labels(std::string &path, MnistLabels &labels) {
 
   labels.num_labels = amount;
 
-  labels.labels.resize(amount);
+  labels.value.resize(amount);
 
   std::vector<char> buffer(amount);
   if (!reader_.file.read(buffer.data(), amount)) {
@@ -90,8 +90,8 @@ bool MnistParser::parse_labels(std::string &path, MnistLabels &labels) {
     return false;
   }
 
-  for (uint32_t i = 0; i < amount; ++i) {
-    labels.labels[i] = static_cast<unsigned char>(buffer[i]);
+  for (size_t i = 0; i < amount; ++i) {
+    labels.value[i] = static_cast<unsigned char>(buffer[i]);
   }
 
   std::cout << "Successfully parsed " << amount << " labels" << std::endl;
