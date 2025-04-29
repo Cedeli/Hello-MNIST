@@ -1,6 +1,6 @@
-#include "mnist_data.h"
-#include "mnist_parser.h"
-#include "util/data_utils.h"
+#include "data/mnist_data.h"
+#include "data/mnist_parser.h"
+#include "utils/data_utils.h"
 #include <eigen3/Eigen/Core>
 #include <iostream>
 

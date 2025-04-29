@@ -16,6 +16,7 @@ target_sources(${EXECUTABLE_NAME}
     src/data/mnist_parser.cpp
     src/utils/file_reader.cpp
     src/utils/data_utils.cpp
+    src/network/neural_network.cpp
 )
 
 add_subdirectory(eigen)
