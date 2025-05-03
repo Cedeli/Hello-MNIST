@@ -15,6 +15,7 @@ public:
   ~NeuralNetwork() = default;
 
   Eigen::MatrixXf forward(const Eigen::MatrixXf &input);
+  Eigen::MatrixXf backward(const Eigen::MatrixXf &input);
   float calculate_loss(const Eigen::MatrixXf &prediction,
                        const Eigen::MatrixXf &labels);
 
@@ -27,6 +28,13 @@ private:
 
   Eigen::MatrixXf W3;
   Eigen::RowVectorXf b3;
+
+  Eigen::MatrixXf Z1;
+  Eigen::MatrixXf A1;
+  Eigen::MatrixXf Z2;
+  Eigen::MatrixXf A2;
+  Eigen::MatrixXf Z3;
+  Eigen::MatrixXf A3;
 
   Eigen::MatrixXf relu(const Eigen::MatrixXf &input);
   Eigen::MatrixXf softmax(const Eigen::MatrixXf &input);
