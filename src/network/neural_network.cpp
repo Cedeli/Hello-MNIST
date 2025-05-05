@@ -32,44 +32,63 @@ void mnist::NeuralNetwork::initialize() {
 }
 
 Eigen::MatrixXf mnist::NeuralNetwork::forward(const Eigen::MatrixXf &input) {
+  // Z1 = X * W1 + b1
   Z1 = (input * W1).rowwise() + b1.transpose();
   A1 = relu(Z1);
 
+  // Z2 = A1 * W2 + b2
   Z2 = (A1 * W2).rowwise() + b2.transpose();
   A2 = relu(Z2);
 
+  // Z3 = A2 * W3 + b3
   Z3 = (A2 * W3).rowwise() + b3.transpose();
   A3 = softmax(Z3);
   return A3;
 }
 
-Eigen::MatrixXf mnist::NeuralNetwork::backward(const Eigen::MatrixXf &input) {
-  size_t batch_size = input.rows();
-  // 1. dZ3 = A3 - Y
-  Eigen::MatrixXf dZ3 = A3 - input;
+void mnist::NeuralNetwork::backward(const Eigen::MatrixXf &input,
+                                    const Eigen::MatrixXf &label,
+                                    float learning_rate) {
+  int batch_size = input.rows();
 
-  // 2. dW3 = (A2.transpose() * dZ3) / N
-  Eigen::MatrixXf dW3 = (A2.transpose() * dZ3) / batch_size;
+  forward(input);
 
-  //    db3 = column-wise sum of dZ3, then / N
+  // 1. Calculate output layer error
+  Eigen::MatrixXf dZ3 = A3 - label;
+
+  // 2. Calculate gradients for output layer
+  //    dW3 = A2^T * dZ3
+  Eigen::MatrixXf dW3 = A2.transpose() * dZ3 / batch_size;
+  //    db3 = sum of dZ3 across all examples
   Eigen::VectorXf db3 = dZ3.colwise().sum() / batch_size;
 
-  // 3. dA2 = dZ3 * W3.transpose()
+  // 3. Backpropagate to hidden layer 2
+  //    dA2 = dZ3 * W3^T
   Eigen::MatrixXf dA2 = dZ3 * W3.transpose();
-
-  // 4. dZ2 = elementwise multiply by ReLU derivative mask
-  Eigen::MatrixXf relu_mask = (Z2.array() > 0).cast<float>();
-  Eigen::MatrixXf dZ2 = dA2.array() * relu_mask.array();
-
-  Eigen::MatrixXf dW2 = (A1.transpose() * dZ2) / batch_size;
+  //    Apply ReLU derivative
+  Eigen::MatrixXf dZ2 = dA2.array() * (Z2.array() > 0.0f).cast<float>();
+  //    Calculate gradients: dW2 = A1^T * dZ2
+  Eigen::MatrixXf dW2 = A1.transpose() * dZ2 / batch_size;
+  //    db2 = sum of dZ2 across all examples
   Eigen::VectorXf db2 = dZ2.colwise().sum() / batch_size;
 
+  // 6. Backpropagate to hidden layer 1
+  //    dA1 = dZ2 * W2^T
   Eigen::MatrixXf dA1 = dZ2 * W2.transpose();
-  Eigen::MatrixXf relu_mask1 = (Z1.array() > 0).cast<float>();
-  Eigen::MatrixXf dZ1 = dA1.array() * relu_mask1.array();
-  Eigen::MatrixXf dW1 = (input.transpose() * dZ1) / batch_size;
+  //    Apply ReLU derivative
+  Eigen::MatrixXf dZ1 = dA1.array() * (Z1.array() > 0.0f).cast<float>();
+  //    Calculate gradients: dW1 = X^T * dZ1
+  Eigen::MatrixXf dW1 = input.transpose() * dZ1 / batch_size;
+  //    db1 = sum of dZ1 across all examples
   Eigen::VectorXf db1 = dZ1.colwise().sum() / batch_size;
-  return input;
+
+  // 7. Update weights and biases
+  W3 -= learning_rate * dW3;
+  b3 -= learning_rate * db3;
+  W2 -= learning_rate * dW2;
+  b2 -= learning_rate * db2;
+  W1 -= learning_rate * dW1;
+  b1 -= learning_rate * db1;
 }
 
 Eigen::MatrixXf mnist::NeuralNetwork::relu(const Eigen::MatrixXf &input) {

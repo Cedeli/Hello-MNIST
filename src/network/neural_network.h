@@ -15,7 +15,8 @@ public:
   ~NeuralNetwork() = default;
 
   Eigen::MatrixXf forward(const Eigen::MatrixXf &input);
-  Eigen::MatrixXf backward(const Eigen::MatrixXf &input);
+  void backward(const Eigen::MatrixXf &input, const Eigen::MatrixXf &labels,
+                float learning_rate);
   float calculate_loss(const Eigen::MatrixXf &prediction,
                        const Eigen::MatrixXf &labels);
 
