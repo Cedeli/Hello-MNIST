@@ -3,33 +3,43 @@
 #include "utils/data_utils.h"
 #include <Eigen/Core>
 #include <iostream>
+#include <network/model_trainer.h>
 
 int main() {
-  mnist::MnistParser parser;
-  mnist::MnistImages raw_images;
-  mnist::MnistLabels raw_labels;
+    const std::string train_images_path = "../data/train-images-idx3-ubyte";
+    const std::string train_labels_path = "../data/train-labels-idx1-ubyte";
+    const std::string test_images_path = "../data/t10k-images-idx3-ubyte";
+    const std::string test_labels_path = "../data/t10k-labels-idx1-ubyte";
 
-  std::string path = "../data/t10k-images-idx3-ubyte";
-  std::string label_path = "../data/t10k-labels-idx1-ubyte";
+    mnist::MnistImages raw_train_images;
+    mnist::MnistLabels raw_train_labels;
+    if (!mnist::MnistParser::parse_images(train_images_path, raw_train_images) ||
+        !mnist::MnistParser::parse_labels(train_labels_path, raw_train_labels)) {
+        std::cerr << "Failed to parse train images" << "\n";
+        return 1;
+    }
 
-  parser.parse_images(path, raw_images);
-  parser.parse_labels(label_path, raw_labels);
+    mnist::MnistImages raw_test_images;
+    mnist::MnistLabels raw_test_labels;
+    if (!mnist::MnistParser::parse_images(test_images_path, raw_test_images) ||
+        !mnist::MnistParser::parse_labels(test_labels_path, raw_test_labels)) {
+        std::cerr << "Failed to parse test images" << "\n";
+        return 1;
+    }
 
-  Eigen::MatrixXf training_images =
-      mnist::DataUtils::prepare_image_data(raw_images);
-  Eigen::MatrixXf training_labels =
-      mnist::DataUtils::prepare_label_data(raw_labels);
+    Eigen::MatrixXf train_images = mnist::DataUtils::prepare_image_data(raw_train_images);
+    Eigen::MatrixXf train_labels = mnist::DataUtils::prepare_label_data(raw_train_labels);
+    Eigen::MatrixXf test_images = mnist::DataUtils::prepare_image_data(raw_test_images);
+    Eigen::MatrixXf test_labels = mnist::DataUtils::prepare_label_data(raw_test_labels);
 
-  std::cout << "\nMiddle 5x10 block (rows 0-4, cols 300-309) of image matrix:\n"
-            << training_images.block(0, 300, 5, 10) << std::endl;
+    constexpr int epochs = 10;
+    constexpr float learning_rate = 0.01f;
+    const int batch_size = static_cast<int>(train_images.rows());
 
-  std::cout << "\nFirst 5 rows of label matrix:\n"
-            << training_labels.block(0, 0, 5, 10) << std::endl;
+    mnist::ModelTrainer::train(train_images, train_labels, epochs, learning_rate, batch_size);
 
-  std::cout << "\nLabel matrix row 0 (expected label 7):\n"
-            << training_labels.row(0) << std::endl;
-  std::cout << "Label matrix row 1 (expected label 2):\n"
-            << training_labels.row(1) << std::endl;
+    const float accuracy = mnist::ModelTrainer::evaluate(test_images, test_labels);
+    std::cout << "Test Accuracy: " << accuracy * 100.0f << "%" << "\n";
 
-  return 0;
+    return 0;
 }

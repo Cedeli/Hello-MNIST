@@ -31,7 +31,6 @@ struct MnistImages {
     MnistImages& operator=(const MnistImages&) = delete;
 };
 
-
 struct MnistLabels {
     uint32_t num_labels;
     uint8_t *value;
@@ -47,6 +46,6 @@ struct MnistLabels {
     MnistLabels& operator=(const MnistLabels&) = delete;
 };
 
-}
+} // namespace mnist
 
 #endif //MNIST_DATA_H

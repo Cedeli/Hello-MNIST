@@ -3,22 +3,22 @@
 
 #include <cstdint>
 #include <fstream>
-#include <iostream>
-#include <optional>
 #include <string>
-#include <vector>
 
 namespace mnist {
-class FileReader {
-private:
-  uint32_t big_endian(char *buffer);
+    class FileReader {
+    public:
+        std::ifstream file;
 
-public:
-  std::ifstream file;
-  bool open(std::string &path);
-  void close();
-  bool read_uint32(uint32_t &value);
-};
+        bool open(std::string &path);
+
+        void close();
+
+        bool read_uint32(uint32_t &value);
+
+    private:
+        static uint32_t big_endian(const char *buffer);
+    };
 } // namespace mnist
 
 #endif // !MNIST_FILE_READER_H

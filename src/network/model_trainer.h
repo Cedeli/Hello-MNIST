@@ -3,25 +3,20 @@
 
 #include "neural_network.h"
 #include <Eigen/Core>
+#include <iostream>
+#include <memory>
 
 namespace mnist {
+    class ModelTrainer {
+    public:
+        static void train(const Eigen::MatrixXf &train_images, const Eigen::MatrixXf &train_labels, int epochs = 10,
+                          float learning_rate = 0.01f, int batch_size = 32);
 
-class ModelTrainer {
-public:
-  ModelTrainer(NeuralNetwork &network) : m_network(network) {}
+        static float evaluate(const Eigen::MatrixXf &test_images, const Eigen::MatrixXf &test_labels);
 
-  void train(const Eigen::MatrixXf &train_images,
-             const Eigen::MatrixXf &train_labels, const Eigen::MatrixXf &images,
-             const Eigen::MatrixXf &labels, int epochs = 10,
-             int batch_size = 32, float learning_rate = 0.01f);
-
-  float evaluate(const Eigen::MatrixXf &test_images,
-                 const Eigen::MatrixXf &test_labels);
-
-private:
-  NeuralNetwork &m_network;
-};
-
+    private:
+        inline static auto network = std::make_unique<NeuralNetwork>();
+    };
 } // namespace mnist
 
 #endif
