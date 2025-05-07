@@ -2,7 +2,7 @@
 #define NEURAL_NETWORK_H
 
 #include <algorithm>
-#include <eigen3/Eigen/Core>
+#include <Eigen/Core>
 #include <memory>
 #include <vector>
 

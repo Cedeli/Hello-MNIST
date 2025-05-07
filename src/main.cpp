@@ -1,13 +1,13 @@
 #include "data/mnist_data.h"
 #include "data/mnist_parser.h"
 #include "utils/data_utils.h"
-#include <eigen3/Eigen/Core>
+#include <Eigen/Core>
 #include <iostream>
 
 int main() {
   mnist::MnistParser parser;
-  MnistImages raw_images;
-  MnistLabels raw_labels;
+  mnist::MnistImages raw_images;
+  mnist::MnistLabels raw_labels;
 
   std::string path = "../data/t10k-images-idx3-ubyte";
   std::string label_path = "../data/t10k-labels-idx1-ubyte";

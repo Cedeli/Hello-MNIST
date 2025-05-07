@@ -2,6 +2,7 @@
 #define MODEL_TRAINER_H
 
 #include "neural_network.h"
+#include <Eigen/Core>
 
 namespace mnist {
 

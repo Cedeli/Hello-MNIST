@@ -33,15 +33,15 @@ void mnist::NeuralNetwork::initialize() {
 
 Eigen::MatrixXf mnist::NeuralNetwork::forward(const Eigen::MatrixXf &input) {
   // Z1 = X * W1 + b1
-  Z1 = (input * W1).rowwise() + b1.transpose();
+  Z1 = (input * W1).rowwise() + b1;
   A1 = relu(Z1);
 
   // Z2 = A1 * W2 + b2
-  Z2 = (A1 * W2).rowwise() + b2.transpose();
+  Z2 = (A1 * W2).rowwise() + b2;
   A2 = relu(Z2);
 
   // Z3 = A2 * W3 + b3
-  Z3 = (A2 * W3).rowwise() + b3.transpose();
+  Z3 = (A2 * W3).rowwise() + b3;
   A3 = softmax(Z3);
   return A3;
 }

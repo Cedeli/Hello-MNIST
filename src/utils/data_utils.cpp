@@ -1,5 +1,4 @@
 #include "data_utils.h"
-#include <cstdint>
 
 Eigen::MatrixXf
 mnist::DataUtils::prepare_image_data(const MnistImages &raw_images) {

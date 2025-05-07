@@ -8,16 +8,16 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}" CACHE INTERNAL "")
 
 set(EXECUTABLE_NAME ${PROJECT_NAME})
 
-add_executable(${EXECUTABLE_NAME})
-
-target_sources(${EXECUTABLE_NAME}
-    PRIVATE
-    src/main.cpp
-    src/data/mnist_parser.cpp
-    src/utils/file_reader.cpp
-    src/utils/data_utils.cpp
-    src/network/neural_network.cpp
+file(GLOB_RECURSE SOURCES
+    "src/*.cpp"
+    "src/data/*.cpp"
+    "src/network/*.cpp"
 )
+
+add_executable(${EXECUTABLE_NAME} ${SOURCES}
+        src/data/mnist_data.h
+        src/data/mnist_parser.cpp
+        src/data/mnist_parser.h)
 
 add_subdirectory(eigen)
 
@@ -27,4 +27,3 @@ target_link_libraries(${EXECUTABLE_NAME}
     PUBLIC
     Eigen3::Eigen
 )
-
