@@ -46,9 +46,7 @@ Eigen::MatrixXf mnist::NeuralNetwork::forward(const Eigen::MatrixXf &input) {
     return A3;
 }
 
-void mnist::NeuralNetwork::backward(const Eigen::MatrixXf &input,
-                                    const Eigen::MatrixXf &labels,
-                                    const float learning_rate) {
+void mnist::NeuralNetwork::backward(const Eigen::MatrixXf &input, const Eigen::MatrixXf &labels, Optimizer &optimizer) {
     const long long batch_size = input.rows();
 
     forward(input);
@@ -83,12 +81,12 @@ void mnist::NeuralNetwork::backward(const Eigen::MatrixXf &input,
     const Eigen::VectorXf db1 = dZ1.colwise().mean();
 
     // 5. Update weights and biases
-    W3 -= learning_rate * dW3;
-    b3 -= learning_rate * db3;
-    W2 -= learning_rate * dW2;
-    b2 -= learning_rate * db2;
-    W1 -= learning_rate * dW1;
-    b1 -= learning_rate * db1;
+    optimizer.update(W3, dW3);
+    optimizer.update(b3, db3);
+    optimizer.update(W2, dW2);
+    optimizer.update(b2, db2);
+    optimizer.update(W1, dW1);
+    optimizer.update(b1, db1);
 }
 
 Eigen::MatrixXf mnist::NeuralNetwork::relu(const Eigen::MatrixXf &input) {

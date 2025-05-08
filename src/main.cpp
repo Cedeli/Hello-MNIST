@@ -27,14 +27,14 @@ int main() {
         return 1;
     }
 
-    Eigen::MatrixXf train_images = mnist::DataUtils::prepare_image_data(raw_train_images);
-    Eigen::MatrixXf train_labels = mnist::DataUtils::prepare_label_data(raw_train_labels);
-    Eigen::MatrixXf test_images = mnist::DataUtils::prepare_image_data(raw_test_images);
-    Eigen::MatrixXf test_labels = mnist::DataUtils::prepare_label_data(raw_test_labels);
+    const Eigen::MatrixXf train_images = mnist::DataUtils::prepare_image_data(raw_train_images);
+    const Eigen::MatrixXf train_labels = mnist::DataUtils::prepare_label_data(raw_train_labels);
+    const Eigen::MatrixXf test_images = mnist::DataUtils::prepare_image_data(raw_test_images);
+    const Eigen::MatrixXf test_labels = mnist::DataUtils::prepare_label_data(raw_test_labels);
 
     constexpr int epochs = 10;
     constexpr float learning_rate = 0.01f;
-    const int batch_size = static_cast<int>(train_images.rows());
+    constexpr int batch_size = 64;
 
     mnist::ModelTrainer::train(train_images, train_labels, epochs, learning_rate, batch_size);
 

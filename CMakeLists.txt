@@ -12,6 +12,7 @@ file(GLOB_RECURSE SOURCES
         "src/*.cpp"
         "src/data/*.cpp"
         "src/network/*.cpp"
+        "src/network/optimizer/*.cpp"
 )
 
 add_executable(${EXECUTABLE_NAME} ${SOURCES})

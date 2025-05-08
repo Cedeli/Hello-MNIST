@@ -1,19 +1,36 @@
 #include "model_trainer.h"
 
-void mnist::ModelTrainer::train(const Eigen::MatrixXf &train_images, const Eigen::MatrixXf &train_labels, int epochs, float learning_rate, int batch_size) {
+#include <numeric>
+#include <random>
+
+#include "optimizer/sgd_optimizer.h"
+
+void mnist::ModelTrainer::train(const Eigen::MatrixXf &train_images, const Eigen::MatrixXf &train_labels, int epochs,
+                                const float learning_rate, const int batch_size) {
     const int n_samples = static_cast<int>(train_images.rows());
     const int n_batches = (n_samples + batch_size - 1) / batch_size;
 
+    SgdOptimizer sgd(learning_rate, 0.9f);
+
+    std::vector<int> idx(n_samples);
+    std::iota(idx.begin(), idx.end(), 0);
+
     for (int epoch = 1; epoch <= epochs; ++epoch) {
+        std::ranges::shuffle(idx, std::mt19937{std::random_device{}()});
+
         float epoch_loss = 0.0f;
         for (int b = 0; b < n_batches; ++b) {
             const int start = b * batch_size;
             const int count = std::min(batch_size, n_samples - start);
 
-            Eigen::MatrixXf X = train_images.middleRows(start, count);
-            Eigen::MatrixXf Y = train_labels.middleRows(start, count);
+            Eigen::MatrixXf X(count, train_images.cols());
+            Eigen::MatrixXf Y(count, train_labels.cols());
+            for (int i = 0; i < count; ++i) {
+                X.row(i) = train_images.row(idx[start + i]);
+                Y.row(i) = train_labels.row(idx[start + i]);
+            }
 
-            network->backward(X, Y, learning_rate);
+            network->backward(X, Y, sgd);
 
             const float batch_loss = NeuralNetwork::calculate_loss(network->forward(X), Y);
             epoch_loss += batch_loss;
