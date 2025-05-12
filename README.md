@@ -21,8 +21,7 @@ cd Hello-MNIST/
 git submodule init
 git submodule update
 
-# Create build directory
-mkdir build && cd build
-cmake ..
-cmake --build . --config Release
+# Build the project
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
 ```
