@@ -9,7 +9,7 @@ A C++ project demonstrating handwritten digit classification using the MNIST dat
 ## Dependencies
 *   A C++23-capable compiler
 *   [Eigen Linear Algebra Library](http://eigen.tuxfamily.org/)
-*   [MNIST dataset](https://www.kaggle.com/datasets/hojjatk/mnist-dataset) (download `.idx` files)
+*   [MNIST dataset](https://www.kaggle.com/datasets/hojjatk/mnist-dataset) (download non `.idx` files)
 
 ## Building
 ```bash
