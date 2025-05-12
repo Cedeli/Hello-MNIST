@@ -11,8 +11,11 @@ set(EXECUTABLE_NAME ${PROJECT_NAME})
 file(GLOB_RECURSE SOURCES
         "src/*.cpp"
         "src/data/*.cpp"
-        "src/network/*.cpp"
-        "src/network/optimizer/*.cpp"
+        "src/layer/*.cpp"
+        "src/layer/activation/*.cpp"
+        "src/loss/*.cpp"
+        "src/model/*.cpp"
+        "src/optimizer/*.cpp"
 )
 
 add_executable(${EXECUTABLE_NAME} ${SOURCES})
