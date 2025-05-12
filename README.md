@@ -1,10 +1,28 @@
-# MNIST Handwritten Digit Classifier
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![C++ Version](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](#requirements)
+[![Build Status](https://github.com/cedeli/hello-mnist/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/cedeli/hello-mnist/actions)
+
+# MNIST Handwritten Digit Classifier
 
 A C++ project demonstrating handwritten digit classification using the MNIST dataset. This implementation leverages the powerful [Eigen](http://eigen.tuxfamily.org/) C++ library for efficient linear algebra operations.
 
 ## Dependencies
-*   A C++ compiler
-*   [Eigen Library](http://eigen.tuxfamily.org/)
-*   The MNIST dataset files. Download from [Kaggle](https://www.kaggle.com/datasets/hojjatk/mnist-dataset).
+*   A C++23-capable compiler
+*   [Eigen Linear Algebra Library](http://eigen.tuxfamily.org/)
+*   [MNIST dataset](https://www.kaggle.com/datasets/hojjatk/mnist-dataset) (download `.idx` files)
+
+## Building
+```bash
+# Clone the repository
+git clone https://github.com/Cedeli/Hello-MNIST.git
+cd Hello-MNIST/
+
+# Initialize eigen submodule
+git submodule init
+git submodule update
+
+# Create build directory
+mkdir build && cd build
+cmake ..
+cmake --build . --config Release
+```
