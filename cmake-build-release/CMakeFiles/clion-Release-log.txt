@@ -1,7 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2024.2.1\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Release "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2024.2.1/bin/ninja/win/x64/ninja.exe" "-DCMAKE_CXX_FLAGS_RELEASE=-O3 -DNDEBUG -march=native" -G Ninja -S D:\Programming\repos\Hello-MNIST -B D:\Programming\repos\Hello-MNIST\cmake-build-release
--- 
--- Configured Eigen 3.4.90
--- 
--- Configuring done (0.5s)
--- Generating done (0.1s)
--- Build files have been written to: D:/Programming/repos/Hello-MNIST/cmake-build-release
