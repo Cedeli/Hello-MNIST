@@ -1,4 +1,5 @@
 #include <Eigen/Core>
+#include <filesystem>
 #include <iostream>
 #include <memory>
 #include <data/mnist_loader.h>
@@ -10,15 +11,21 @@
 #include <optimizer/sgd.h>
 #include <model/trainer.h>
 
-int main() {
+int main(int argc, char* argv[]) {
     constexpr float learning_rate = 0.01f;
     constexpr int epochs = 10;
     constexpr int batch_size = 64;
 
-    const std::string train_images_path = "../data/train-images-idx3-ubyte";
-    const std::string train_labels_path = "../data/train-labels-idx1-ubyte";
-    const std::string test_images_path = "../data/t10k-images-idx3-ubyte";
-    const std::string test_labels_path = "../data/t10k-labels-idx1-ubyte";
+    std::filesystem::path executable_path(argv[0]);
+    std::filesystem::path executable_dir = executable_path.parent_path();
+
+    std::filesystem::path data_path = executable_dir / "../data";
+    data_path = weakly_canonical(data_path);
+
+    const std::string train_images_path = (data_path / "train-images-idx3-ubyte").string();
+    const std::string train_labels_path = (data_path / "train-labels-idx1-ubyte").string();
+    const std::string test_images_path = (data_path / "t10k-images-idx3-ubyte").string();
+    const std::string test_labels_path = (data_path / "t10k-labels-idx1-ubyte").string();
 
     auto loader = hmnist::data::MnistLoader{};
     const auto train = loader.load(train_images_path, train_labels_path);

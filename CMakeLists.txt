@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -march=native" CACHE STRING "Flags used by the C++ compiler during release builds.")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0" CACHE STRING "Flags used by the C++ compiler during debug builds.")
 
+set(DATA_DIR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/data")
+
 set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}" CACHE INTERNAL "")
 
 set(EXECUTABLE_NAME ${PROJECT_NAME})
@@ -26,6 +28,7 @@ add_executable(${EXECUTABLE_NAME} ${SOURCES})
 add_subdirectory(eigen)
 
 target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_compile_definitions(${EXECUTABLE_NAME} PRIVATE DATA_DIRECTORY_PATH="${DATA_DIR_PATH}")
 
 target_link_libraries(${EXECUTABLE_NAME}
         PUBLIC
