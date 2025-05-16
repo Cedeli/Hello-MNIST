@@ -3,12 +3,29 @@
 #include <fstream>
 #include "data/mnist_loader.h"
 
+inline uint32_t manual_bswap32(uint32_t val) {
+    return (val & 0xFF000000U) >> 24 |
+           (val & 0x00FF0000U) >> 8 |
+           (val & 0x0000FF00U) << 8 |
+           (val & 0x000000FFU) << 24;
+}
+
+#if defined(_MSC_VER)
+#include <stdlib.h>
+#define bswap32(x) _byteswap_ulong(x)
+#elif defined(__GNUC__) || defined(__clang__)
+#define bswap32(x) __builtin_bswap32(x)
+#else
+#define bswap32(x) manual_bswap32(x)
+#warning "Using manual bswap32 implementation."
+#endif
+
 namespace {
     void write_idx_images(const std::filesystem::path &p, const uint32_t count, const uint32_t rows,
                           const uint32_t cols) {
         std::ofstream out(p, std::ios::binary);
         auto write32 = [&](uint32_t x) {
-            uint32_t v = std::byteswap(x);
+            uint32_t v = bswap32(x);
             out.write(reinterpret_cast<char *>(&v), 4);
         };
         write32(2051);
@@ -22,7 +39,7 @@ namespace {
     void write_idx_labels(const std::filesystem::path &p, const uint32_t count) {
         std::ofstream out(p, std::ios::binary);
         auto write32 = [&](uint32_t x) {
-            uint32_t v = std::byteswap(x);
+            uint32_t v = bswap32(x);
             out.write(reinterpret_cast<char *>(&v), 4);
         };
         write32(2049);
@@ -55,7 +72,7 @@ TEST(MnistLoaderTest, ThrowsOnBadMagic) {
     auto tmp = std::filesystem::temp_directory_path();
     auto img = tmp / "bad-images-idx3-ubyte";
     std::ofstream out(img, std::ios::binary);
-    uint32_t bad = std::byteswap(0xDEADBEEF);
+    uint32_t bad = bswap32(0xDEADBEEF);
     out.write(reinterpret_cast<char *>(&bad), 4);
     hmnist::data::MnistLoader loader;
     EXPECT_THROW(loader.load(img.string(), img.string()), std::runtime_error);
