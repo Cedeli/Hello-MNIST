@@ -8,7 +8,7 @@ namespace {
                           const uint32_t cols) {
         std::ofstream out(p, std::ios::binary);
         auto write32 = [&](uint32_t x) {
-            uint32_t v = __builtin_bswap32(x);
+            uint32_t v = std::byteswap(x);
             out.write(reinterpret_cast<char *>(&v), 4);
         };
         write32(2051);
@@ -22,7 +22,7 @@ namespace {
     void write_idx_labels(const std::filesystem::path &p, const uint32_t count) {
         std::ofstream out(p, std::ios::binary);
         auto write32 = [&](uint32_t x) {
-            uint32_t v = __builtin_bswap32(x);
+            uint32_t v = std::byteswap(x);
             out.write(reinterpret_cast<char *>(&v), 4);
         };
         write32(2049);
@@ -55,7 +55,7 @@ TEST(MnistLoaderTest, ThrowsOnBadMagic) {
     auto tmp = std::filesystem::temp_directory_path();
     auto img = tmp / "bad-images-idx3-ubyte";
     std::ofstream out(img, std::ios::binary);
-    uint32_t bad = __builtin_bswap32(0xDEADBEEF);
+    uint32_t bad = std::byteswap(0xDEADBEEF);
     out.write(reinterpret_cast<char *>(&bad), 4);
     hmnist::data::MnistLoader loader;
     EXPECT_THROW(loader.load(img.string(), img.string()), std::runtime_error);

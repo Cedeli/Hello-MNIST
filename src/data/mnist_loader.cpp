@@ -1,12 +1,5 @@
 #include "mnist_loader.h"
 
-#if defined(_MSC_VER)
-  #include <stdlib.h>
-  #define bswap32(x) _byteswap_ulong(x)
-#else
-  #define bswap32(x) __builtin_bswap32(x)
-#endif
-
 hmnist::data::DataSet hmnist::data::MnistLoader::load(const std::string &image_path, const std::string &label_path) {
     std::ifstream fi(image_path, std::ios::binary);
     std::ifstream fj(label_path, std::ios::binary);
@@ -60,5 +53,5 @@ hmnist::data::DataSet hmnist::data::MnistLoader::load(const std::string &image_p
 uint32_t hmnist::data::MnistLoader::readUInt(std::ifstream &stream) {
     uint32_t x = 0;
     stream.read(reinterpret_cast<char *>(&x), 4);
-    return bswap32(x);
+    return std::byteswap(x);
 }
