@@ -20,11 +20,11 @@ namespace hmnist::layer {
 
         void update(optimizer::Optimizer &opt) override;
 
-    private:
         Eigen::MatrixXf W, Xc, Zc;
         Eigen::RowVectorXf b;
         Eigen::MatrixXf dW;
         Eigen::RowVectorXf db;
+    private:
         std::unique_ptr<activation::Activation> m_activation;
     };
 }

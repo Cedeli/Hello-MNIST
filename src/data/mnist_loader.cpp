@@ -14,13 +14,13 @@ hmnist::data::DataSet hmnist::data::MnistLoader::load(const std::string &image_p
     if (!fi.is_open()) throw std::runtime_error("Cannot open MNIST image file: " + image_path);
     if (!fj.is_open()) throw std::runtime_error("Cannot open MNIST label file: " + label_path);
 
-    readUInt(fi);
+    if (readUInt(fi) != 2051) throw std::runtime_error("Invalid MNIST image file: " + image_path);
     uint32_t n_images = readUInt(fi);
     uint32_t rows = readUInt(fi);
     uint32_t cols = readUInt(fi);
     uint32_t image_res = rows * cols;
 
-    readUInt(fj);
+    if (readUInt(fj) != 2049) throw std::runtime_error("Invalid MNIST label file: " + label_path);
     if (uint32_t n_labels = readUInt(fj); n_images != n_labels) {
         throw std::runtime_error(
             "The number of images (" + std::to_string(n_images) +

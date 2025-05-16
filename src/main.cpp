@@ -5,7 +5,7 @@
 #include <data/mnist_loader.h>
 #include <layer/dense_layer.h>
 #include <layer/layer.h>
-#include <layer/activation/relu.h>
+#include <layer/activation/leaky_relu.h>
 #include <layer/activation/softmax.h>
 #include <loss/cross_entropy_loss.h>
 #include <optimizer/sgd.h>
@@ -33,9 +33,9 @@ int main(int argc, char* argv[]) {
 
     std::vector<std::unique_ptr<hmnist::layer::Layer> > layers;
     layers.emplace_back(
-        std::make_unique<hmnist::layer::DenseLayer>(784, 128, std::make_unique<hmnist::layer::activation::Relu>()));
+        std::make_unique<hmnist::layer::DenseLayer>(784, 128, std::make_unique<hmnist::layer::activation::LeakyRelu>()));
     layers.emplace_back(
-        std::make_unique<hmnist::layer::DenseLayer>(128, 64, std::make_unique<hmnist::layer::activation::Relu>()));
+        std::make_unique<hmnist::layer::DenseLayer>(128, 64, std::make_unique<hmnist::layer::activation::LeakyRelu>()));
     layers.emplace_back(
         std::make_unique<hmnist::layer::DenseLayer>(64, 10, std::make_unique<hmnist::layer::activation::Softmax>()));
 
