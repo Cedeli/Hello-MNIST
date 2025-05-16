@@ -22,7 +22,7 @@ TEST(TrainerTest, OverfitsTinyDataset) {
                                                         std::make_unique<hmnist::loss::CrossEntropyLoss>(),
                                                         std::make_unique<hmnist::optimizer::Sgd>(0.01f));
     const hmnist::model::Trainer trainer(std::move(net));
-    trainer.train(X, Y, 500, 4);
+    trainer.train(X, Y, 1000, 4);
     const float acc = trainer.evaluate(X, Y);
     EXPECT_GT(acc, 0.99f);
 }

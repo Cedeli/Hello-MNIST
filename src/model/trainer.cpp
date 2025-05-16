@@ -9,11 +9,9 @@ void hmnist::model::Trainer::train(const Eigen::MatrixXf &X, const Eigen::Matrix
     float current_loss_value = 0.0f;
 
     std::vector<int> indices(N);
-    // std::iota(indices.begin(), indices.end(), 0);
-    // std::random_device rd;
-    // std::mt19937 rng(rd());
-    // TEMPORARILY TEST
-    std::mt19937 rng(42);
+    std::iota(indices.begin(), indices.end(), 0);
+    std::random_device rd;
+    std::mt19937 rng(rd());
     for (int e = 0; e < epochs; ++e) {
         std::cout << "Starting Epoch " << e + 1 << "/" << epochs << std::endl;
         std::ranges::shuffle(indices, rng);
