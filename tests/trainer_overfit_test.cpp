@@ -20,7 +20,7 @@ TEST(TrainerTest, OverfitsTinyDataset) {
         std::make_unique<hmnist::layer::DenseLayer>(4, 2, std::make_unique<hmnist::layer::activation::Softmax>()));
     auto net = std::make_unique<hmnist::model::Network>(std::move(layers),
                                                         std::make_unique<hmnist::loss::CrossEntropyLoss>(),
-                                                        std::make_unique<hmnist::optimizer::Sgd>(0.5f));
+                                                        std::make_unique<hmnist::optimizer::Sgd>(0.01f));
     const hmnist::model::Trainer trainer(std::move(net));
     trainer.train(X, Y, 500, 4);
     const float acc = trainer.evaluate(X, Y);
